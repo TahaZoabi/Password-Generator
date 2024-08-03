@@ -37,7 +37,7 @@ public class PasswordGenerator {
         System.out.println("Random Generated Password is: " + generatedPassword);
     }
 
-    private String buildCombination() {
+    public String buildCombination() {
         StringBuilder combination = new StringBuilder();
         if (includeUpperCase) combination.append(UPPER_CASE_LETTERS);
         if (includeLowerCase) combination.append(LOWER_CASE_LETTERS);
@@ -46,7 +46,7 @@ public class PasswordGenerator {
         return combination.toString();
     }
 
-    private String generatePassword(String combination) {
+    public String generatePassword(String combination) {
         char[] password = new char[length];
         for (int i = 0; i < password.length; i++) {
             password[i] = combination.charAt(random.nextInt(combination.length()));
@@ -54,42 +54,29 @@ public class PasswordGenerator {
         return new String(password);
     }
 
-    private boolean getBooleanInput(String prompt) {
+    public boolean getBooleanInput(String prompt) {
         String input;
-        while (true) {
+        System.out.print(prompt);
+        input = scanner.next().trim().toLowerCase();
+        while (!input.equals("y") && !input.equals("n")) {
             System.out.print(prompt);
             input = scanner.next().trim().toLowerCase();
-            if (input.equals("y")) {
-                return true;
-            } else if (input.equals("n")) {
-                return false;
-            } else {
-                System.out.println("Invalid input. Please enter 'Y' or 'N'.");
-            }
         }
+        return input.equals("y");
     }
 
-    private int getPositiveInteger(String prompt) {
+
+    public int getPositiveInteger(String prompt) {
         int value;
-        while (true) {
             System.out.print(prompt);
-            if (scanner.hasNextInt()) {
+            value = scanner.nextInt();
+            while (value <= 0) {
+                System.out.println("The length must be a positive integer.");
                 value = scanner.nextInt();
-                if (value > 0) {
-                    scanner.nextLine();
-                    return value;
-                } else {
-                    System.out.println("The length must be a positive integer.");
-                }
-            } else {
-                System.out.println("Invalid input. Please enter a positive integer.");
-                scanner.next();
             }
+            scanner.nextLine();
+            return value;
         }
     }
 
-    public static void main(String[] args) {
-        PasswordGenerator generator = new PasswordGenerator();
-        generator.generate();
-    }
-}
+
